@@ -8,8 +8,20 @@
 
 #import "CSViewController.h"
 #import "CSMyScene.h"
+#import <KiiSDK/Kii.h>
 
 @implementation CSViewController
+
+-(void) viewDidAppear:(BOOL)animated{
+    
+    if (![KiiUser loggedIn]) {
+        
+        KTLoginViewController *loginView = [[KTLoginViewController alloc] init];
+        [self presentViewController:loginView animated:TRUE completion:nil];
+        
+    }
+    
+}
 
 - (void)viewDidLoad
 {
@@ -17,8 +29,8 @@
 
     // Configure the view.
     SKView * skView = (SKView *)self.view;
-    skView.showsFPS = YES;
-    skView.showsNodeCount = YES;
+//    skView.showsFPS = YES;
+//    skView.showsNodeCount = YES;
     
     // Create and configure the scene.
     SKScene * scene = [CSMyScene sceneWithSize:skView.bounds.size];
