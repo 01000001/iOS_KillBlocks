@@ -10,4 +10,6 @@
 
 @interface LeaderboardViewController : KTTableViewController
 
+@property (nonatomic, assign) NSUInteger userScore;
+
 @end

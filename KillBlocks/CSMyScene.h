@@ -10,4 +10,6 @@
 
 @interface CSMyScene : SKScene <UIAlertViewDelegate>
 
+@property (nonatomic, weak) UIViewController *parentViewController;
+
 @end

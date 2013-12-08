@@ -8,6 +8,7 @@
 
 #import "CSMyScene.h"
 #import "BlockNode.h"
+#import "LeaderboardViewController.h"
 
 #define COLUMNS         6
 #define ROWS            6
@@ -232,6 +233,25 @@ typedef enum {
 
 -(void)showLeaderboard{
     
+    LeaderboardViewController *lvc = [[LeaderboardViewController alloc] init];
+    
+    lvc.bucket = [Kii bucketWithName:@"scores"];
+    lvc.userScore = _score;
+    
+    
+    KiiQuery *query = [KiiQuery queryWithClause:nil];
+    [query sortByDesc:@"score"];
+    [query setLimit:20];
+    
+    lvc.query = query;
+    
+    [self.parentViewController presentViewController:lvc animated:TRUE completion:nil];
+    
+    [lvc refreshQuery];
+    
+    
+    // reset the score
+    _score = 0;
     
 }
 
@@ -248,16 +268,14 @@ typedef enum {
     // asynchronous call, uploading the object to the cloud and the block happens ones the object is uploaded
     [scoreObject saveWithBlock:^(KiiObject *object, NSError *error) {
         if (error == nil) {
-            [self showLeaderboard]
+            
+            [KTLoader hideLoader]; 
+            [self showLeaderboard];
             //[KTLoader showLoader:@"Score saved!" animated:TRUE withIndicator:KTLoaderIndicatorSuccess andHideInterval:KTLoaderDurationAuto];
         } else {
             [KTLoader showLoader:@"Error saving!" animated:TRUE withIndicator:KTLoaderIndicatorError andHideInterval:KTLoaderDurationAuto];
         }
     }];
-    
-    
-    // reset the score
-    _score = 0;
     
 }
 
